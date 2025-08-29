@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Quiz Game</title>
+  <link rel="stylesheet" href="app2.css" />
+</head>
+<body>
+  <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
+
+  <div class="container">
+    <div class="quiz-box">
+      <h1 class="question">Loading question...</h1>
+      <div class="options">
+        <!-- Options will be injected here -->
+      </div>
+      <button id="next-btn">Next</button>
+    </div>
+  </div>
+  <script>
+    const questions = [
+      {
+        question: "Which language is used to style web pages?",
+        options: ["A. HTML", "B. CSS", "C. JavaScript", "D. Python"],
+        answer: 1
+      },
+      {
+        question: "What does CPU stand for?",
+        options: ["A. Central Processing Unit", "B. Computer Power Unit", "C. Control Panel Utility", "D. Core Performance Unit"],
+        answer: 0
+      },
+      {
+        question: "Which tag is used to create a hyperlink in HTML?",
+        options: ["A. <link>", "B. <href>", "C. <a>", "D. <url>"],
+        answer: 2
+      },
+      {
+        question: "Which cloud platform is known for EC2 and S3?",
+        options: ["A. Azure", "B. GCP", "C. AWS", "D. IBM Cloud"],
+        answer: 2
+      },
+      {
+        question: "Which command lists files in Linux?",
+        options: ["A. ls", "B. dir", "C. list", "D. show"],
+        answer: 0
+      },
+      {
+        question: "Which protocol is used to transfer web pages?",
+        options: ["A. FTP", "B. HTTP", "C. SMTP", "D. SSH"],
+        answer: 1
+      },
+      {
+        question: "What does CSS stand for?",
+        options: ["A. Computer Style Sheet", "B. Cascading Style Sheet", "C. Creative Style Syntax", "D. Central Style System"],
+        answer: 1
+      },
+      {
+        question: "Which tool is used for version control?",
+        options: ["A. Git", "B. Docker", "C. Jenkins", "D. Ansible"],
+        answer: 0
+      },
+      {
+        question: "Which HTML tag is used for images?",
+        options: ["A. <img>", "B. <src>", "C. <image>", "D. <pic>"],
+        answer: 0
+      },
+      {
+        question: "Which scripting language is used for client-side interactivity?",
+        options: ["A. PHP", "B. Python", "C. JavaScript", "D. Ruby"],
+        answer: 2
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    const questionEl = document.querySelector(".question");
+    const optionsEl = document.querySelector(".options");
+    const nextBtn = document.getElementById("next-btn");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(index);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      const buttons = optionsEl.querySelectorAll("button");
+      buttons.forEach((btn, i) => {
+        btn.style.backgroundColor = i === correct ? "green" : i === selected ? "red" : "#2575fc";
+        btn.disabled = true;
+      });
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        questionEl.textContent = "🎉 Quiz Completed!";
+        optionsEl.innerHTML = "";
+        nextBtn.style.display = "none";
+      }
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>
